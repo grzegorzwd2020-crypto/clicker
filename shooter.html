@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Стрелялка</title>
+<style>
+  body { background: black; margin: 0; overflow: hidden; }
+  canvas { display: block; margin: auto; background: #111; }
+</style>
+</head>
+<body>
+<canvas id="game" width="600" height="400"></canvas>
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let bullets = [];
+let rocket = { x: 280, y: 20, w: 40, h: 40, dx: 2 };
+
+document.addEventListener('click', () => {
+  bullets.push({ x: 300, y: 380, r: 5 });
+});
+
+function update() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // ракета
+  rocket.x += rocket.dx;
+  if (rocket.x <= 0 || rocket.x + rocket.w >= canvas.width) rocket.dx *= -1;
+  ctx.fillStyle = 'red';
+  ctx.fillRect(rocket.x, rocket.y, rocket.w, rocket.h);
+
+  // пули
+  ctx.fillStyle = 'white';
+  for (let i=0; i<bullets.length; i++) {
+    bullets[i].y -= 5;
+    ctx.beginPath();
+    ctx.arc(bullets[i].x, bullets[i].y, bullets[i].r, 0, Math.PI*2);
+    ctx.fill();
+    // столкновение
+    if (bullets[i].y < rocket.y+rocket.h && bullets[i].x > rocket.x && bullets[i].x < rocket.x+rocket.w) {
+      alert('🎯 Попал!');
+      bullets = [];
+      rocket.x = 280;
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+update();
+</script>
+</body>
+</html>
