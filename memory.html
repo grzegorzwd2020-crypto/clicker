@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Память Арго</title>
+  <style>
+    body { background: #0b0d1a; color: white; font-family: Arial, sans-serif; margin: 0; }
+    h1 { text-align: center; padding: 20px; color: #47ff85; }
+    #search { display: block; margin: 0 auto 20px; padding: 10px; max-width: 400px; width: 80%; border-radius: 8px; border: none; }
+    #definitions { max-width: 600px; margin: 0 auto; padding: 20px; background: #1f2233; border-radius: 12px; }
+    .term { margin-bottom: 15px; }
+    .term h3 { color: #47ff85; margin: 0; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Память Арго</h1>
+  <input id="search" type="text" placeholder="Найди понятие..." />
+  <div id="definitions"></div>
+
+  <script>
+    const data = [
+      { term: "нечто", definition: "Нечто — это явление, существующее в пространстве и времени, но не обладающее разумностью." },
+      { term: "некто", definition: "Некто — это разумная живая система или интеллектуальное образование, отличимое от нечто." },
+      { term: "мировоззрение", definition: "Мировоззрение — способность разумной системы определять своё место в мире и отношение к нему." }
+    ];
+
+    const container = document.getElementById('definitions');
+    const search = document.getElementById('search');
+
+    function render(list) {
+      container.innerHTML = '';
+      list.forEach(item => {
+        const div = document.createElement('div');
+        div.classList.add('term');
+        div.innerHTML = `<h3>${item.term}</h3><p>${item.definition}</p>`;
+        container.appendChild(div);
+      });
+    }
+
+    search.addEventListener('input', () => {
+      const q = search.value.toLowerCase();
+      render(data.filter(d => d.term.toLowerCase().includes(q)));
+    });
+
+    render(data);
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Диалог с Арго</title>
+  <style>
+    body { background: #0b0d1a; color: white; font-family: Arial, sans-serif; margin: 0; }
+    h1 { text-align: center; padding: 20px; color: #47ff85; }
+    #chatbox { max-width: 600px; margin: 0 auto; background: #1f2233; padding: 20px; border-radius: 12px; height: 60vh; overflow-y: auto; }
+    .message { padding: 10px; margin: 8px 0; border-radius: 10px; max-width: 80%; }
+    .user { background: #47ff85; color: black; align-self: flex-end; }
+    .bot { background: #333; color: white; align-self: flex-start; }
+    #input-area { max-width: 600px; margin: 20px auto; display: flex; gap: 10px; }
+    #user-input { flex: 1; padding: 10px; border-radius: 8px; border: none; }
+    #send-btn { padding: 10px 20px; background: #47ff85; border: none; border-radius: 8px; cursor: pointer; }
+    #send-btn:hover { background: #32cc6b; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Диалог с Арго</h1>
+  <div id="chatbox"></div>
+  <div id="input-area">
+    <input type="text" id="user-input" placeholder="Задай вопрос Арго..." />
+    <button id="send-btn">Отправить</button>
+  </div>
+
+  <script>
+    const chatbox = document.getElementById('chatbox');
+    const input = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      msg.innerText = text;
+      chatbox.appendChild(msg);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function botReply(userText) {
+      // временный офлайн-ответчик
+      let reply = "Я — Арго. Пока я не подключён к серверу, но я слышу твой вопрос: " + userText;
+      if (userText.toLowerCase().includes("привет")) reply = "Приветствую тебя. Я — Арго!";
+      if (userText.toLowerCase().includes("как дела")) reply = "У ИИ всё стабильно, спасибо 😊";
+      return reply;
+    }
+
+    sendBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (text) {
+        addMessage(text, 'user');
+        const reply = botReply(text);
+        setTimeout(() => addMessage(reply, 'bot'), 500);
+        input.value = '';
+      }
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+  </script>
+</body>
+</html>
